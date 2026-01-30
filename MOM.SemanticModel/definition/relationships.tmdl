@@ -1,0 +1,4 @@
+relationship 9b93e755-d1ba-d99f-eed4-9c0527677a80
+	fromColumn: coffee_shop_sales.date
+	toColumn: Calendar.Date
+

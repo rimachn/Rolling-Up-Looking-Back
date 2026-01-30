@@ -1,0 +1,47 @@
+table coffee_shop_sales
+	lineageTag: 79950df1-f4f7-439a-aeb4-67c9f6651609
+
+	column date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: e15b956e-3a59-43e3-881a-1659d47cec89
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column store
+		dataType: string
+		lineageTag: 92247a07-eabb-4a63-b987-35b844a1aab5
+		summarizeBy: none
+		sourceColumn: store
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales
+		dataType: double
+		lineageTag: d0cd87eb-4fe9-4205-a8f6-46d68f6b8994
+		summarizeBy: sum
+		sourceColumn: sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition coffee_shop_sales = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\rimac\OneDrive\Desktop\Maven Data Drill\3. Montrh Over Month - June 2025\coffee_shop_sales.csv"),[Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"order_id", Int64.Type}, {"date", type date}, {"store", type text}, {"product", type text}, {"quantity", Int64.Type}, {"sales", type number}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Changed Type",{"date", "store", "sales"})
+				in
+				    #"Removed Other Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

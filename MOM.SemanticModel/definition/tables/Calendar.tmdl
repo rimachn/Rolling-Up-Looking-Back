@@ -1,0 +1,43 @@
+table Calendar
+	lineageTag: 21777dae-5c67-4eed-bee2-2a0cd640da40
+
+	column Date
+		formatString: Short Date
+		lineageTag: 686b8e73-d5ba-42cf-97f8-8c262daa0fd2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month =
+			
+			MONTH('Calendar'[Date])
+		formatString: 0
+		lineageTag: 5e8e0822-82b6-40c7-9132-af94e2551960
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name' =
+			
+			FORMAT('Calendar'[Date], "mmmm")
+		lineageTag: 738dc9fa-13cf-4c2e-9fd8-087a0ecb8660
+		summarizeBy: none
+		sortByColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar = calculated
+		mode: import
+		source = ```
+				
+				CALENDAR( 
+				    DATE(YEAR(MIN(coffee_shop_sales[date])),1,1),
+				    DATE(YEAR(MAX(coffee_shop_sales[date])),6,30)
+				)
+				
+				```
+
+	annotation PBI_Id = 2ef14313620a4ac392485630f3c6f897
+
