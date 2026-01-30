@@ -7,7 +7,6 @@ You’ve been given a table with raw data for individual coffee shop transaction
 
 
 ## Tools Used
-- SQL
 - Power BI
 
 ## Notes
